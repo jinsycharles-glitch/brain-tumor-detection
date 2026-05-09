@@ -22,4 +22,4 @@ This project demonstrates how AI can assist in medical imaging and brain tumor d
 This project is only for educational/demo purposes and not for real medical diagnosis.
 
 ## 👨‍💻 Author
-Your Name
+Jinsycharles
