@@ -1,0 +1,398 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.app{display:flex;height:720px;background:#060a12;font-family:'DM Sans',system-ui,sans-serif;font-size:13px;color:#e8f0ff;border-radius:12px;overflow:hidden;border:1px solid rgba(100,180,255,0.15)}
+.sidebar{width:200px;min-width:200px;background:#0c1220;border-right:1px solid rgba(100,180,255,0.1);display:flex;flex-direction:column}
+.logo-area{padding:16px 14px 12px;border-bottom:1px solid rgba(100,180,255,0.1)}
+.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,#0066ff,#00c4ff);border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+.logo-title{font-size:13px;font-weight:600;letter-spacing:0.3px}
+.logo-sub{font-size:9px;color:#3a5878;font-family:monospace;letter-spacing:1px;margin-top:2px}
+.nav{flex:1;padding:10px 8px;overflow:hidden}
+.nav-lbl{font-size:9px;font-family:monospace;text-transform:uppercase;letter-spacing:1.5px;color:#3a5878;padding:0 8px;margin-bottom:5px}
+.nav-item{display:flex;align-items:center;gap:8px;padding:8px;border-radius:7px;cursor:pointer;font-size:12px;color:#7a9bc4;margin-bottom:2px;border:1px solid transparent;transition:all 0.15s}
+.nav-item:hover{background:rgba(0,196,255,0.06);color:#e8f0ff}
+.nav-item.act{background:rgba(0,196,255,0.1);color:#00c4ff;border-color:rgba(0,196,255,0.2)}
+.nav-dot{width:14px;height:14px;flex-shrink:0;opacity:0.8}
+.nbadge{margin-left:auto;font-size:8px;font-family:monospace;background:rgba(0,196,255,0.15);color:#00c4ff;padding:1px 5px;border-radius:10px}
+.sfoot{padding:12px;border-top:1px solid rgba(100,180,255,0.1)}
+.sdot{display:inline-block;width:5px;height:5px;border-radius:50%;background:#00ff9d;margin-right:5px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{height:50px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(100,180,255,0.1);background:#0c1220;flex-shrink:0}
+.ptitle{font-size:14px;font-weight:600;font-family:Georgia,serif}
+.tbr{display:flex;align-items:center;gap:10px}
+.badge{font-size:9px;font-family:monospace;padding:3px 7px;border-radius:12px;background:rgba(0,255,157,0.1);color:#00ff9d;border:1px solid rgba(0,255,157,0.2)}
+.clk{font-size:11px;color:#7a9bc4;font-family:monospace}
+.tabs{display:flex;gap:2px;padding:12px 20px 0;border-bottom:1px solid rgba(100,180,255,0.08)}
+.tab{padding:7px 14px;font-size:12px;cursor:pointer;color:#7a9bc4;border-bottom:2px solid transparent;transition:all 0.15s}
+.tab:hover{color:#e8f0ff}
+.tab.act{color:#00c4ff;border-bottom-color:#00c4ff}
+.content{flex:1;overflow:hidden;padding:16px 20px}
+.pane{display:none;height:100%}
+.pane.act{display:block}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.sc{background:#141e2e;border:1px solid rgba(100,180,255,0.1);border-radius:10px;padding:14px}
+.sl{font-size:9px;color:#3a5878;font-family:monospace;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
+.sv{font-size:22px;font-weight:600;font-family:Georgia,serif}
+.sv.b{color:#00c4ff}.sv.g{color:#00ff9d}.sv.w{color:#ffb830}
+.ss{font-size:10px;color:#3a5878;margin-top:2px}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.panel{background:#141e2e;border:1px solid rgba(100,180,255,0.1);border-radius:10px;padding:14px}
+.ph{font-size:9px;font-family:monospace;text-transform:uppercase;letter-spacing:1px;color:#3a5878;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.ph::after{content:'';flex:1;height:1px;background:rgba(100,180,255,0.1)}
+
+.upload-z{border:2px dashed rgba(0,196,255,0.25);border-radius:10px;padding:28px 16px;text-align:center;background:rgba(0,196,255,0.02);margin-bottom:10px}
+.uicon{width:36px;height:36px;margin:0 auto 10px;opacity:0.5}
+.ut{font-size:13px;font-weight:500;margin-bottom:4px}
+.us{font-size:11px;color:#7a9bc4}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:7px;font-size:12px;font-weight:500;cursor:pointer;border:none;font-family:inherit;transition:all 0.15s}
+.bp{background:#00c4ff;color:#000}.bo{background:transparent;color:#e8f0ff;border:1px solid rgba(100,180,255,0.25)}
+.btn-row{display:flex;gap:8px;margin-top:8px}
+
+.det-pos{display:flex;align-items:center;gap:10px;padding:12px;border-radius:8px;background:rgba(255,77,109,0.1);border:1px solid rgba(255,77,109,0.2);margin-bottom:12px}
+.det-icon{width:30px;height:30px;border-radius:50%;background:rgba(255,77,109,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.det-lbl{font-size:12px;font-weight:500;color:#ff4d6d}
+.det-sub{font-size:10px;color:#7a9bc4}
+.rrow{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(100,180,255,0.07);font-size:12px}
+.rrow:last-child{border:none}
+.rk{color:#7a9bc4}.rv{font-family:monospace;font-size:11px}
+.rv.c{color:#00c4ff}.rv.d{color:#ff4d6d}.rv.g{color:#00ff9d}
+.cbar{height:5px;background:#060a12;border-radius:3px;margin-top:6px}
+.cfill{height:100%;border-radius:3px;background:linear-gradient(90deg,#0066ff,#00c4ff)}
+.pbar-row{margin-bottom:8px}
+.pbar-lbl{display:flex;justify-content:space-between;font-size:10px;margin-bottom:3px;color:#7a9bc4}
+.pbar-track{height:3px;background:#060a12;border-radius:2px}
+.pbar-fill{height:100%;border-radius:2px}
+
+.seg-img{width:100%;height:130px;background:#0a1525;border-radius:8px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.seg-brain{width:90px;height:75px;border-radius:50%;background:#1a2a3a;position:relative}
+.seg-tumor{position:absolute;top:22px;left:28px;width:32px;height:26px;border-radius:50%;background:rgba(255,77,109,0.55);border:2px dashed #ffb830}
+.seg-legend{display:flex;gap:12px;margin-top:8px;font-size:10px;font-family:monospace}
+
+.chat-area{display:flex;flex-direction:column;height:100%}
+.chat-msgs{flex:1;overflow:hidden;padding-bottom:10px;display:flex;flex-direction:column;gap:10px}
+.msg{display:flex;gap:8px;max-width:420px}
+.msg.u{align-self:flex-end;flex-direction:row-reverse}
+.av{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500}
+.av.ai{background:linear-gradient(135deg,#0066ff,#00c4ff);color:#000}
+.av.u{background:rgba(100,180,255,0.15);color:#00c4ff}
+.bub{padding:9px 12px;border-radius:10px;font-size:12px;line-height:1.6;max-width:340px}
+.msg.ai .bub{background:#141e2e;border:1px solid rgba(100,180,255,0.12);border-top-left-radius:3px}
+.msg.u .bub{background:rgba(0,102,255,0.15);border:1px solid rgba(0,102,255,0.25);border-top-right-radius:3px}
+.cinput{display:flex;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(100,180,255,0.1)}
+.ci{flex:1;background:#141e2e;border:1px solid rgba(100,180,255,0.15);border-radius:8px;padding:9px 12px;color:#e8f0ff;font-size:12px;font-family:inherit;outline:none}
+.csend{width:36px;height:36px;border-radius:7px;background:#00c4ff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+.rep-table{width:100%;border-collapse:collapse;font-size:11px}
+.rep-table th{font-family:monospace;font-size:9px;text-transform:uppercase;letter-spacing:0.8px;color:#3a5878;padding:8px 10px;text-align:left;border-bottom:1px solid rgba(100,180,255,0.1)}
+.rep-table td{padding:10px;border-bottom:1px solid rgba(100,180,255,0.05);color:#e8f0ff}
+.rep-table tr:hover td{background:rgba(100,180,255,0.03)}
+.pill{display:inline-block;font-size:9px;font-family:monospace;padding:2px 7px;border-radius:10px}
+.pill.pos{background:rgba(255,77,109,0.12);color:#ff4d6d;border:1px solid rgba(255,77,109,0.2)}
+.pill.neg{background:rgba(0,255,157,0.08);color:#00ff9d;border:1px solid rgba(0,255,157,0.2)}
+.ttag{display:inline-block;font-size:9px;padding:2px 6px;border-radius:4px;background:rgba(0,196,255,0.1);color:#00c4ff;font-family:monospace}
+.rid{font-family:monospace;font-size:9px;color:#3a5878}
+</style>
+
+<h2 class="sr-only">NEUROSCAN AI — interactive dashboard preview showing the MRI analyzer, chat, and reports modules</h2>
+
+<div class="app">
+  <div class="sidebar">
+    <div class="logo-area">
+      <div class="logo-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2"/></svg>
+      </div>
+      <div class="logo-title">NEUROSCAN AI</div>
+      <div class="logo-sub">Neural Imaging v2.4</div>
+    </div>
+    <div class="nav">
+      <div class="nav-lbl">Main</div>
+      <div class="nav-item" onclick="switchTab('home',this)">
+        <svg class="nav-dot" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/><rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/></svg>
+        Dashboard
+      </div>
+      <div class="nav-item act" onclick="switchTab('analyzer',this)">
+        <svg class="nav-dot" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="12" height="12" rx="1"/><path d="M4 7h6M7 4v6"/></svg>
+        MRI Analyzer
+        <span class="nbadge">AI</span>
+      </div>
+      <div class="nav-item" onclick="switchTab('chat',this)">
+        <svg class="nav-dot" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 9a1 1 0 0 1-1 1H4L2 12V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1z"/></svg>
+        AI Chat
+        <span class="nbadge">GPT</span>
+      </div>
+      <div class="nav-lbl" style="margin-top:12px">Tools</div>
+      <div class="nav-item" onclick="switchTab('reports',this)">
+        <svg class="nav-dot" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6z"/><path d="M8 1v5h4M5 8h4M5 10h4"/></svg>
+        Report History
+      </div>
+    </div>
+    <div class="sfoot">
+      <div style="font-size:11px;color:#7a9bc4"><span class="sdot"></span>System Online</div>
+      <div style="font-size:10px;color:#3a5878;margin-top:3px;font-family:monospace">CNN-UNet v3.1</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="ptitle" id="ptitle">MRI Analyzer</div>
+      <div class="tbr">
+        <span class="badge">● 94.2% Accuracy</span>
+        <span class="clk" id="clk">--:--:--</span>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- HOME pane -->
+      <div class="pane" id="pane-home">
+        <div class="stats">
+          <div class="sc"><div class="sl">Scans Analyzed</div><div class="sv b">2,847</div><div class="ss">+12 today</div></div>
+          <div class="sc"><div class="sl">Detection Accuracy</div><div class="sv g">94.2%</div><div class="ss">CNN-UNet</div></div>
+          <div class="sc"><div class="sl">Avg Analysis Time</div><div class="sv b">3.4s</div><div class="ss">Target &lt;5s</div></div>
+          <div class="sc"><div class="sl">Reports Generated</div><div class="sv w">1,203</div><div class="ss">PDF exports</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+          <div class="panel" style="cursor:pointer" onclick="switchTabById('analyzer')">
+            <div style="width:34px;height:34px;border-radius:9px;background:rgba(0,102,255,0.15);display:flex;align-items:center;justify-content:center;margin-bottom:10px">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0066ff" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            </div>
+            <div style="font-size:13px;font-weight:500;margin-bottom:5px">Tumor Detection</div>
+            <div style="font-size:11px;color:#7a9bc4">CNN + U-Net segmentation for Glioma, Meningioma & Pituitary tumors.</div>
+          </div>
+          <div class="panel" style="cursor:pointer" onclick="switchTabById('reports')">
+            <div style="width:34px;height:34px;border-radius:9px;background:rgba(0,196,255,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:10px">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00c4ff" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+            </div>
+            <div style="font-size:13px;font-weight:500;margin-bottom:5px">Clinical Reports</div>
+            <div style="font-size:11px;color:#7a9bc4">AI-generated structured reports with clinical interpretation and PDF export.</div>
+          </div>
+          <div class="panel" style="cursor:pointer" onclick="switchTabById('chat')">
+            <div style="width:34px;height:34px;border-radius:9px;background:rgba(0,255,157,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:10px">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00ff9d" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <div style="font-size:13px;font-weight:500;margin-bottom:5px">Medical AI Chat</div>
+            <div style="font-size:11px;color:#7a9bc4">Context-aware chatbot explaining findings, tumor types, and next steps.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ANALYZER pane -->
+      <div class="pane act" id="pane-analyzer">
+        <div class="grid2" style="height:100%">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div class="ph">MRI Scan Input</div>
+            <div class="upload-z" id="upload-z" style="cursor:pointer" onclick="simulateUpload()">
+              <div id="upload-ph">
+                <svg class="uicon" viewBox="0 0 24 24" fill="none" stroke="#00c4ff" stroke-width="1"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <div class="ut">Drop MRI Image Here</div>
+                <div class="us">JPG, PNG, WEBP — max 20MB</div>
+                <div style="margin-top:12px"><button class="btn bo" style="font-size:11px;padding:6px 12px" onclick="event.stopPropagation();simulateUpload()">Browse Files</button></div>
+              </div>
+              <div id="upload-done" style="display:none;text-align:center">
+                <div style="width:80px;height:65px;background:#1a2a3a;border-radius:8px;margin:0 auto 8px;position:relative;display:flex;align-items:center;justify-content:center">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7a9bc4" stroke-width="1"><circle cx="12" cy="12" r="10"/><path d="M8 12q0-4 4-4t4 4-4 4"/><circle cx="12" cy="12" r="2"/></svg>
+                  <div style="position:absolute;inset:0;border-radius:8px;background:rgba(255,77,109,0.15)"></div>
+                  <div style="position:absolute;top:18px;left:24px;width:20px;height:16px;border-radius:50%;background:rgba(255,77,109,0.5);border:1.5px dashed #ffb830"></div>
+                </div>
+                <div style="font-size:11px;color:#00ff9d">brain_mri_scan.jpg loaded</div>
+              </div>
+            </div>
+            <div class="btn-row">
+              <button class="btn bp" style="flex:1" id="analyze-btn" onclick="runAnalysis()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                Analyze MRI
+              </button>
+              <button class="btn bo" style="flex:1" id="rpt-btn" onclick="showReportModal()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                Generate Report
+              </button>
+            </div>
+            <div id="seg-area" style="display:none">
+              <div class="ph" style="margin-bottom:8px">Segmentation Overlay</div>
+              <div class="seg-img">
+                <div style="position:relative">
+                  <div class="seg-brain">
+                    <div class="seg-tumor"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="seg-legend">
+                <span style="color:#ff4d6d">■ Tumor Region</span>
+                <span style="color:#ffb830">■ Boundary</span>
+                <span style="color:#7a9bc4">■ Normal Tissue</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="ph">Analysis Results</div>
+            <div class="panel" id="result-panel">
+              <div id="result-placeholder" style="text-align:center;color:#3a5878;padding:30px 16px">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="margin:0 auto 10px;display:block;opacity:0.4"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                <div style="font-size:13px;margin-bottom:5px">Awaiting Analysis</div>
+                <div style="font-size:11px">Upload an MRI and click Analyze MRI</div>
+              </div>
+              <div id="loading-ui" style="display:none;text-align:center;padding:20px">
+                <div id="loader-ring" style="width:44px;height:44px;border-radius:50%;border:3px solid rgba(100,180,255,0.15);border-top-color:#00c4ff;margin:0 auto 12px;animation:spin 0.8s linear infinite"></div>
+                <div id="loader-msg" style="font-size:12px;font-weight:500">Preprocessing image...</div>
+                <div id="loader-step" style="font-size:10px;color:#7a9bc4;font-family:monospace;margin-top:4px">Step 1/4</div>
+              </div>
+              <div id="result-content" style="display:none">
+                <div class="det-pos">
+                  <div class="det-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff4d6d" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+                  <div><div class="det-lbl">Tumor DETECTED</div><div class="det-sub">Glioblastoma Multiforme</div></div>
+                </div>
+                <div class="rrow"><span class="rk">Tumor Type</span><span class="rv d">Glioma</span></div>
+                <div class="rrow"><span class="rk">WHO Grade</span><span class="rv c">Grade IV</span></div>
+                <div class="rrow"><span class="rk">Nature</span><span class="rv d">Malignant</span></div>
+                <div class="rrow"><span class="rk">Location</span><span class="rv" style="color:#e8f0ff">Right frontal lobe</span></div>
+                <div class="rrow"><span class="rk">Size</span><span class="rv c">3.2 × 2.8 cm</span></div>
+                <div style="margin:10px 0 6px;font-size:11px;display:flex;justify-content:space-between"><span style="color:#7a9bc4">Confidence</span><span style="font-family:monospace;font-weight:500">91.7%</span></div>
+                <div class="cbar"><div class="cfill" style="width:91.7%"></div></div>
+                <div style="margin-top:12px">
+                  <div style="font-size:9px;font-family:monospace;text-transform:uppercase;letter-spacing:0.8px;color:#3a5878;margin-bottom:6px">Model Probabilities</div>
+                  <div class="pbar-row"><div class="pbar-lbl"><span>Glioma</span><span>91.7%</span></div><div class="pbar-track"><div class="pbar-fill" style="width:91.7%;background:#00c4ff"></div></div></div>
+                  <div class="pbar-row"><div class="pbar-lbl"><span>Meningioma</span><span>4.2%</span></div><div class="pbar-track"><div class="pbar-fill" style="width:4.2%;background:#3a5878"></div></div></div>
+                  <div class="pbar-row"><div class="pbar-lbl"><span>Pituitary</span><span>2.1%</span></div><div class="pbar-track"><div class="pbar-fill" style="width:2.1%;background:#3a5878"></div></div></div>
+                  <div class="pbar-row"><div class="pbar-lbl"><span>No Tumor</span><span>2.0%</span></div><div class="pbar-track"><div class="pbar-fill" style="width:2.0%;background:#3a5878"></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHAT pane -->
+      <div class="pane" id="pane-chat">
+        <div class="chat-area">
+          <div class="chat-msgs" id="chat-msgs">
+            <div class="msg ai">
+              <div class="av ai">N</div>
+              <div class="bub">Hello! I'm <strong>NEUROSCAN AI Assistant</strong>.<br>I can explain MRI findings, tumor types, WHO grading, and recommend clinical next steps. How can I help?</div>
+            </div>
+            <div class="msg u">
+              <div class="av u">U</div>
+              <div class="bub">What does WHO Grade IV Glioma mean?</div>
+            </div>
+            <div class="msg ai">
+              <div class="av ai">N</div>
+              <div class="bub"><strong>WHO Grade IV Glioma</strong> (Glioblastoma Multiforme) is the most aggressive primary brain tumor. Key features:<br><br>• Rapid growth with central necrosis<br>• Mean survival: 14–16 months with treatment<br>• Treatment: Maximal resection + Stupp protocol (RT + temozolomide)<br>• MGMT methylation status is a key prognostic marker</div>
+            </div>
+          </div>
+          <div class="cinput">
+            <input class="ci" placeholder="Ask about brain tumors, MRI findings, treatment options..." id="chat-q">
+            <button class="csend" onclick="sendChat()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- REPORTS pane -->
+      <div class="pane" id="pane-reports">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div style="font-size:12px;color:#7a9bc4">Scan and report history</div>
+          <button class="btn bp" style="font-size:11px;padding:6px 12px" onclick="switchTabById('analyzer')">New Analysis</button>
+        </div>
+        <div style="background:#141e2e;border:1px solid rgba(100,180,255,0.1);border-radius:10px;overflow:hidden">
+          <table class="rep-table">
+            <thead><tr><th>Report ID</th><th>Date</th><th>Patient</th><th>Detection</th><th>Tumor Type</th><th>Confidence</th></tr></thead>
+            <tbody>
+              <tr><td><span class="rid">RPT-1001</span></td><td style="color:#7a9bc4">Apr 28, 09:14</td><td style="font-family:monospace">PT-4821</td><td><span class="pill pos">Positive</span></td><td><span class="ttag">Glioma</span></td><td style="font-family:monospace">91.7%</td></tr>
+              <tr><td><span class="rid">RPT-1002</span></td><td style="color:#7a9bc4">Apr 27, 14:32</td><td style="font-family:monospace">PT-4819</td><td><span class="pill neg">Negative</span></td><td style="color:#3a5878">—</td><td style="font-family:monospace">97.3%</td></tr>
+              <tr><td><span class="rid">RPT-1003</span></td><td style="color:#7a9bc4">Apr 26, 11:05</td><td style="font-family:monospace">PT-4817</td><td><span class="pill pos">Positive</span></td><td><span class="ttag">Meningioma</span></td><td style="font-family:monospace">88.9%</td></tr>
+              <tr><td><span class="rid">RPT-1004</span></td><td style="color:#7a9bc4">Apr 25, 16:20</td><td style="font-family:monospace">PT-4815</td><td><span class="pill pos">Positive</span></td><td><span class="ttag">Pituitary</span></td><td style="font-family:monospace">94.1%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+
+<script>
+function updateClock(){
+  const t=new Date();
+  const s=v=>String(v).padStart(2,'0');
+  document.getElementById('clk').textContent=s(t.getHours())+':'+s(t.getMinutes())+':'+s(t.getSeconds());
+}
+updateClock();setInterval(updateClock,1000);
+
+const titles={home:'Dashboard Overview',analyzer:'MRI Analyzer',chat:'AI Chat Assistant',reports:'Report History'};
+const navItems=document.querySelectorAll('.nav-item');
+
+function switchTab(name,el){
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('act'));
+  document.getElementById('pane-'+name).classList.add('act');
+  document.getElementById('ptitle').textContent=titles[name]||name;
+  navItems.forEach(n=>n.classList.remove('act'));
+  if(el)el.classList.add('act');
+}
+function switchTabById(name){
+  switchTab(name,null);
+  navItems.forEach(n=>{if(n.textContent.trim().startsWith(name==='analyzer'?'MRI':name==='chat'?'AI':name==='reports'?'Report':'Dashboard'))n.classList.add('act')});
+}
+
+let uploaded=false,analyzed=false;
+function simulateUpload(){
+  if(analyzed)return;
+  uploaded=true;
+  document.getElementById('upload-ph').style.display='none';
+  document.getElementById('upload-done').style.display='block';
+  document.getElementById('upload-z').style.borderColor='rgba(0,196,255,0.5)';
+}
+
+function runAnalysis(){
+  if(!uploaded){simulateUpload();}
+  document.getElementById('result-placeholder').style.display='none';
+  document.getElementById('result-content').style.display='none';
+  document.getElementById('loading-ui').style.display='block';
+  const steps=[['Preprocessing image...','Step 1/4'],['Running CNN inference...','Step 2/4'],['Applying U-Net segmentation...','Step 3/4'],['Compiling results...','Step 4/4']];
+  let i=0;
+  const iv=setInterval(()=>{
+    if(i<steps.length){
+      document.getElementById('loader-msg').textContent=steps[i][0];
+      document.getElementById('loader-step').textContent=steps[i][1];
+      i++;
+    } else {
+      clearInterval(iv);
+      document.getElementById('loading-ui').style.display='none';
+      document.getElementById('result-content').style.display='block';
+      document.getElementById('seg-area').style.display='block';
+      analyzed=true;
+    }
+  },550);
+}
+
+function showReportModal(){
+  if(!analyzed)return;
+  alert('Report preview:\n\nNEUROSCAN AI — Clinical Report\nReport ID: RPT-'+Date.now()+'\nDetection: POSITIVE — Tumor Detected\nType: Glioma (Glioblastoma Multiforme)\nGrade: WHO Grade IV | Nature: Malignant\nLocation: Right frontal lobe | Size: 3.2 × 2.8 cm\nConfidence: 91.7%\n\nRecommendation: Urgent neurosurgical consultation. Stereotactic biopsy for histopathological confirmation. MGMT methylation testing advised.');
+}
+
+const chatReplies=[
+  'Glioblastoma (GBM) has a median survival of 14–16 months. Key prognostic factors include MGMT promoter methylation, IDH mutation status, and extent of surgical resection.',
+  'For this Glioma Grade IV finding, the recommended next steps are: 1) Neurosurgical consultation within 48 hours, 2) Gadolinium-contrast MRI, 3) Pre-surgical MGMT/IDH molecular testing.',
+  'T2-FLAIR sequences are most sensitive for perilesional edema in gliomas. Post-contrast T1 reveals active tumor with blood-brain barrier breakdown — the enhancing component.',
+];
+let ri=0;
+function sendChat(){
+  const q=document.getElementById('chat-q');
+  const txt=q.value.trim();
+  if(!txt)return;
+  const msgs=document.getElementById('chat-msgs');
+  msgs.innerHTML+=`<div class="msg u"><div class="av u">U</div><div class="bub">${txt}</div></div>`;
+  q.value='';
+  setTimeout(()=>{
+    const r=chatReplies[ri%chatReplies.length];ri++;
+    msgs.innerHTML+=`<div class="msg ai"><div class="av ai">N</div><div class="bub">${r}</div></div>`;
+    msgs.scrollTop=msgs.scrollHeight;
+  },800);
+}
+document.getElementById('chat-q').addEventListener('keydown',e=>{if(e.key==='Enter')sendChat();});
+</script>
